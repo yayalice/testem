@@ -32,6 +32,7 @@ program
     .command('ci')
     .description('Continuous integration mode')
     .option('-T, --timeout [sec]', 'timeout a browser after [sec] seconds', null)
+    .option('-R, --reporter [name]', 'reporter to use', 'tap')
     .action(function(env){
         env.__proto__ = program
         progOptions = env
