@@ -1,8 +1,11 @@
 framework: jasmine
 src_files:
 - web/*.js
-launch_in_ci: [phantomjs, node]
+launch_in_ci: [phantomjs, node, tap]
 port: 7358
 launchers:
     node:
         command: mocha web/hello_tests.js
+    tap:
+        command: mocha web/hello_tests.js -R tap
+        protocol: tap

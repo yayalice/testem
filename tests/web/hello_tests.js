@@ -4,6 +4,10 @@ if (typeof module !== 'undefined'){
 
 describe('hello', function(){
     it('says hello world', function(){
-        hello()
+        hello();
+    });
+
+    it('says hello to human', function(){
+        hello('bob');
     });
 });

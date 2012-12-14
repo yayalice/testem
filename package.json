@@ -36,7 +36,8 @@
     "backbone": "*",
     "styled_string": "*",
     "colors": "*",
-    "fireworm": "*"
+    "fireworm": "*",
+    "mocha": "*"
   },
   "files": [
     "docs",
@@ -54,7 +55,6 @@
     "test": "cd tests; ../node_modules/.bin/mocha --timeout 3000 -R nyan *_tests.js ui/*_tests.js; cd .."
   },
   "devDependencies": {
-    "mocha": "*",
     "sinon": "*",
     "async": "*",
     "chai": "*",
