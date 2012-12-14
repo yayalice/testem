@@ -61,7 +61,7 @@ function mochaAdapter(socket){
 			}else if (test.state === 'failed'){
 				var items = [
 					{ passed: false
-					, message: test.err.message
+					, message: test.err.name + ': ' + test.err.message
 					, stacktrace: (test.err && test.err.stack) ? test.err.stack : undefined
 					}
 				]
