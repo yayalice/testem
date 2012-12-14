@@ -1,3 +1,9 @@
+if (typeof module !== 'undefined'){
+    var hello = require('./hello');
+}
+
 describe('hello', function(){
-    expect(hello()).toEqual('hello world');
+    it('says hello world', function(){
+        hello()
+    });
 });

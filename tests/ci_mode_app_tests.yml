@@ -1,0 +1,8 @@
+framework: jasmine
+src_files:
+- web/*.js
+launch_in_ci: [phantomjs, node]
+port: 7358
+launchers:
+    node:
+        command: mocha web/hello_tests.js
