@@ -56,6 +56,30 @@ program.on('--help', function(){
     console.log()
 })
 
+/* ============ Reporters list stolen shamelessly from Mocha ===== */
+program.on('reporters', function(){
+  console.log();
+  console.log('    dot - dot matrix');
+  console.log('    doc - html documentation');
+  console.log('    spec - hierarchical spec list');
+  console.log('    json - single json object');
+  console.log('    progress - progress bar');
+  console.log('    list - spec-style listing');
+  console.log('    tap - test-anything-protocol');
+  console.log('    landing - unicode landing strip');
+  console.log('    xunit - xunit reportert');
+  console.log('    teamcity - teamcity ci support');
+  console.log('    html-cov - HTML test coverage');
+  console.log('    json-cov - JSON test coverage');
+  console.log('    min - minimal reporter (great with --watch)');
+  console.log('    json-stream - newline delimited json events');
+  console.log('    markdown - markdown documentation (github flavour)');
+  console.log('    nyan - nyan cat!');
+  console.log();
+  process.exit();
+});
+
+
 program.parse(process.argv)
 
 catchem.on('err', function(e){
