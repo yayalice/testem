@@ -26,6 +26,7 @@ function jasmineAdapter(socket){
     }
     JasmineAdapterReporter.prototype.reportSpecResults = function(spec){
         if (spec.results().skipped) return
+        debugger
         var test = {
             passed: 0,
             failed: 0,

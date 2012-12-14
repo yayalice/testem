@@ -3,7 +3,7 @@ var Config = require('../lib/config')
 var App = require('../lib/ci_mode_app')
 var expect = require('chai').expect
 
-describe.only('ci_mode_app', function(){
+describe('ci_mode_app', function(){
 
     it('outputs tap by default', function(done){
         this.timeout(3000)
@@ -13,9 +13,9 @@ describe.only('ci_mode_app', function(){
                 expect(stderr).to.not.be.ok
             }
             expect(stdout.toString()).to.equal([
-                '1..0'
-              , 'ok 1 PhantomJS 1.5 hello says hello world.'
-              , 'ok 2 node "mocha web/hello_tests.js"\n'
+                'ok 1 PhantomJS 1.5 hello says hello world.'
+              , 'ok 2 node "mocha web/hello_tests.js"'
+              , '1..2\n'
             ].join('\n'))
             done()
         })
@@ -30,6 +30,7 @@ describe.only('ci_mode_app', function(){
                     console.error(stderr)
                     expect(stderr).to.not.be.ok
                 }
+                expect(stdout).not.to.equal('')
                 done()
             })
         })
