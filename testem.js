@@ -71,7 +71,7 @@ program.on('reporters', function(){
   console.log('    teamcity - teamcity ci support');
   console.log('    html-cov - HTML test coverage');
   console.log('    json-cov - JSON test coverage');
-  console.log('    min - minimal reporter (great with --watch)');
+  console.log('    min - minimal reporter');
   console.log('    json-stream - newline delimited json events');
   console.log('    markdown - markdown documentation (github flavour)');
   console.log('    nyan - nyan cat!');
