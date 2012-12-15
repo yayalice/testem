@@ -6,6 +6,7 @@ var splitLines = strutils.splitLines
 var indent = strutils.indent
 var pad = strutils.pad
 var template = strutils.template
+var isIndented = strutils.isIndented
 
 describe('splitLines', function(){
     it('splits on newline', function(){
@@ -38,6 +39,18 @@ describe('splitLines', function(){
             expect(ss[2].toString()).to.equal('\u001b[31mjkl\u001b[0m')
         })
 
+    })
+
+    describe('isIndented', function(){
+        it('is false for degenerate case', function(){
+            expect(isIndented('')).not.to.be.ok
+            expect(isIndented(null)).not.to.be.ok
+            expect(isIndented(undefined)).not.to.be.ok
+        })
+        it('is true', function(){
+            expect(isIndented('    abc')).to.be.ok
+            expect(isIndented('\tabc')).to.be.ok
+        })
     })
 })
 
