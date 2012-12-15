@@ -7,6 +7,7 @@ Testem`s adapter for Mocha. It works by monkey-patching `Runner.prototype.emit`.
 
 */
 
+
 function mochaAdapter(socket){
 
 	var results = 
@@ -22,6 +23,7 @@ function mochaAdapter(socket){
 		Runner = mocha.Runner || Mocha.Runner
 	}catch(e){
 		console.error('Testem: failed to register adapter for mocha.')
+		return
 	}
 
 	function emit(){
