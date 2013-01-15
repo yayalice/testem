@@ -39,6 +39,7 @@ program
     })
 
 
+
 program.on('--help', function(){
     console.log('  Keyboard Controls (in dev mode):\n')
     console.log('    ENTER                  run the tests')
@@ -62,18 +63,13 @@ catchem.on('err', function(e){
     log.error(e.stack)
 })
 
-var config = new Config(appMode, progOptions)
+var api = new Api()
 if (appMode === 'launchers'){
-    config.read(function(){
-        config.printLauncherInfo()
-    })
-}else{
-    var api = new Api()
-    if (appMode === 'ci'){
-        api.startCI(progOptions)
-    }else{
-        api.startDev(progOptions)
-    }
+    api.startLaunchers(progOptions)
+}else if (appMode === 'ci'){
+    api.startCI(progOptions)
+}else if (appMode === 'dev'){
+    api.startDev(progOptions)
 }
 
 
