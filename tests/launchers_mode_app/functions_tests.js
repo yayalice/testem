@@ -9,73 +9,74 @@ describe('launchers_mode_app_functions', function(){
 
         it('starts out with selection at 1st launcher', function(){
             var app = appWithTwoLaunchers()
-            expect(app.view.selection).to.equal(4)
+            expect(app.view.selection).to.equal(3)
         })
-
+        
         it('selects next launcher', function(){
             var app = appWithTwoLaunchers()
-            expect(functions.step(app, downArrow).view.selection).to.equal(5)
+            expect(functions.step(app, downArrow).view.selection).to.equal(4)
         })
         
         it('stops if try to "next" at the bottom', function(){
-            var app = appWithTwoLaunchers({selection: 5})
-            expect(functions.step(app, downArrow).view.selection).to.equal(5)
+            var app = appWithTwoLaunchers({selection: 3})
+            expect(functions.step(app, downArrow).view.selection).to.equal(4)
         })
         
         it('selects previous launcher', function(){
-            var app = appWithTwoLaunchers({selection: 5})
-            expect(functions.step(app, upArrow).view.selection).to.equal(4)
+            var app = appWithTwoLaunchers({selection: 4})
+            expect(functions.step(app, upArrow).view.selection).to.equal(3)
         })
         
         it('stops if try to "previous" at the top', function(){
             var app = appWithTwoLaunchers()
-            expect(functions.step(app, upArrow).view.selection).to.equal(4)
+            expect(functions.step(app, upArrow).view.selection).to.equal(3)
         })
 
         
         it('adds to the checked array if ENTER hit', function(){
             var app = appWithTwoLaunchers()
-            expect(functions.step(app, '\r').checked).to.deep.equal([4])
+            expect(functions.step(app, ENTER).ci).to.deep.equal([3])
         })
         
         it('vertically centers your selection if you go beyond the bottom', function(){
             var windowSize = {lines: 4, columns: 80}
             var app = appWithTwoLauncherSections({windowSize: windowSize})
             app = functions.step(app, downArrow)
-            expect(app.view.scrollOffset).to.equal(3)
+            expect(app.view.scrollOffset).to.equal(2)
         })
-
+        
     })
-
+    
     describe('render', function(){
 
         it('renders app with one section of launchers', function(){
             var app = appWithTwoLaunchers()
             expect(unstyledAndTrimmed(functions.render(app, windowSize))).to.deep.equal([
-                "Test'em Launcher Selection",
-                "==========================",
-                "Section one",
-                "-----------",
-                "    [ ] Chrome 22 (Windows 8)",
-                "    [ ] Firefox 16 (Windows 8)"
+                "TEST'EM LAUNCHER SELECTION",
+                "Section one:",
+                "  Dev CI",
+                "  [ ] [ ] Chrome",
+                "  [ ] [ ] Firefox",
+                "[ENTER to toggle ci; SPACE to toggle dev; q to quit; s to save and quit]"
             ])
         })
+        
         
         it('renders app with two sections of launchers', function(){
             var app = appWithTwoLauncherSections({selection: 2})
             expect(unstyledAndTrimmed(functions.render(app, windowSize))).to.deep.equal([
-                "Test'em Launcher Selection",
-                "==========================",
-                "Section one",
-                "-----------",
-                "    [ ] Chrome 22 (Windows 8)",
-                "    [ ] Firefox 16 (Windows 8)",
-                "Section two",
-                "-----------",
-                "    [ ] Safari 6 (Mac OS 10.6)"
+                "TEST'EM LAUNCHER SELECTION",
+                "Section one:",
+                "  Dev CI",
+                "  [ ] [ ] Chrome",
+                "  [ ] [ ] Firefox",
+                "Section two:",
+                "  Dev CI",
+                "  [ ] [ ] Safari",
+                "[ENTER to toggle ci; SPACE to toggle dev; q to quit; s to save and quit]"
             ])
         })
-
+        
         it('renders to the size of the window', function(){
             var windowSize = {lines: 4, columns: 80}
             var app = appWithTwoLauncherSections({windowSize: windowSize})
@@ -85,17 +86,17 @@ describe('launchers_mode_app_functions', function(){
         it('scrolls', function(){
             var app = appWithTwoLauncherSections({scrollOffset: 1})
             expect(unstyledAndTrimmed(functions.render(app))).to.deep.equal([
-                "==========================",
-                "Section one",
-                "-----------",
-                "    [ ] Chrome 22 (Windows 8)",
-                "    [ ] Firefox 16 (Windows 8)",
-                "Section two",
-                "-----------",
-                "    [ ] Safari 6 (Mac OS 10.6)"
+                "Section one:",
+                "  Dev CI",
+                "  [ ] [ ] Chrome",
+                "  [ ] [ ] Firefox",
+                "Section two:",
+                "  Dev CI",
+                "  [ ] [ ] Safari",
+                "[ENTER to toggle ci; SPACE to toggle dev; q to quit; s to save and quit]"
             ])
         })
-
+        
         it('pads empty lines', function(){
             var app = appWithTwoLaunchers()
             var lines = functions.render(app, windowSize)
@@ -104,22 +105,38 @@ describe('launchers_mode_app_functions', function(){
 
     })
 
+    it('should change window size', function(){
+        var app = appWithTwoLaunchers()
+        var newSize = {lines: 5, columns: 23}
+        var newApp = functions.changeWindowSize(app, newSize)
+        expect(newApp.view.windowSize).to.deep.equal(newSize)
+        expect(newApp.view.selection).to.equal(app.view.selection)
+        expect(newApp.view.scrollOffset).to.equal(app.view.scrollOffset)
+    })
+
 })
+
+
 
 
 {
     // factory functions, helper functions and global variables to ease setup
     var downArrow = [27, 91, 66]
     var upArrow = [27, 91, 65]
+    var ENTER = '\r'
     var windowSize = {lines: 10, columns: 80}
+
+    function browser(name){
+        return {displayName: function(){ return name }}
+    }
 
     function appWithTwoLaunchers(viewProps){
         var launchers = [
             {
                 section: 'Section one'
                 , launchers: [
-                    {browser: 'Chrome', browser_version: 22.0, os: 'Windows', os_version: 8.0},
-                    {browser: 'Firefox', browser_version: 16.0, os: 'Windows', os_version: 8.0}
+                    browser('Chrome'),
+                    browser('Firefox')
                 ]
             }
         ]
@@ -133,14 +150,14 @@ describe('launchers_mode_app_functions', function(){
             {
                 section: 'Section one'
                 , launchers: [
-                    {browser: 'Chrome', browser_version: 22.0, os: 'Windows', os_version: 8.0},
-                    {browser: 'Firefox', browser_version: 16.0, os: 'Windows', os_version: 8.0}
+                    browser('Chrome'),
+                    browser('Firefox')
                 ]
             },
             {
                 section: 'Section two'
                 , launchers: [
-                    {browser: 'Safari', browser_version: 6.0, os: 'Mac OS', os_version: 10.6}
+                    browser('Safari')
                 ]
             }
         ]

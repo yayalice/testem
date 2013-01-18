@@ -36,7 +36,8 @@
     "backbone": "*",
     "styled_string": "*",
     "colors": "*",
-    "fireworm": "*"
+    "fireworm": "*",
+    "deep-equal": "0.0.0"
   },
   "files": [
     "docs",
