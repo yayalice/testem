@@ -71,6 +71,15 @@ var FakeScreen = {
     , display: function(){
         return this
     }
+    , reset: function(){
+        return this
+    }
+    , cursor: function(){
+        return this
+    }
+    , on: function(){
+        return this
+    }
 }
 
 Object.defineProperty(FakeScreen, 'buffer', {
