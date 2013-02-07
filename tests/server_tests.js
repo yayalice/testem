@@ -19,8 +19,9 @@ describe('Server', function(){
             port: port,
             src_files: [
                 'web/hello.js',
-                {src:'web/hello_tests.js', attrs: ['data-foo="true"', 'data-bar']}
-            ]
+                {src: 'web/hello_tests.js', attrs: ['data-foo="true"', 'data-bar']}
+            ],
+            cwd: 'tests'
         })
         baseUrl = 'http://localhost:' + port + '/'
 		runners = new Backbone.Collection
@@ -51,8 +52,8 @@ describe('Server', function(){
                 '/testem.js',
                 '/testem/jasmine-html.js',
                 '',
-                'web/hello.js',
-                'web/hello_tests.js' ])
+                '/web/hello.js',
+                '/web/hello_tests.js' ])
             done()
         })
     })
@@ -65,16 +66,16 @@ describe('Server', function(){
     }
 
     it('gets src file', function(done){
-        assertUrlReturnsFileContents(baseUrl + 'web/hello.js', 'web/hello.js', done)
+        assertUrlReturnsFileContents(baseUrl + 'web/hello.js', 'tests/web/hello.js', done)
     })
 
     it('gets bundled files', function(done){
-        assertUrlReturnsFileContents(baseUrl + 'testem/jasmine.js', '../public/testem/jasmine.js', done)
+        assertUrlReturnsFileContents(baseUrl + 'testem/jasmine.js', 'public/testem/jasmine.js', done)
     })
 
     it('serves custom test page', function(done){
         config.set('test_page', 'web/tests.html')
-        assertUrlReturnsFileContents(baseUrl, 'web/tests.html', done)
+        assertUrlReturnsFileContents(baseUrl, 'tests/web/tests.html', done)
     })
 
     it('renders custom test page as template', function(done){
@@ -85,8 +86,8 @@ describe('Server', function(){
                 '<!doctype html>'
                 , '<html>'
                 , '<head>'
-                , '        <script src="web/hello.js"></script>'
-                , '        <script src="web/hello_tests.js" data-foo="true"  data-bar ></script>'
+                , '        <script src="/web/hello.js"></script>'
+                , '        <script src="/web/hello_tests.js" data-foo="true"  data-bar ></script>'
                 , '    </head>'
                 ].join('\n'))
             done()
@@ -103,16 +104,16 @@ describe('Server', function(){
             })
         })
         it('routes file path', function(done){
-            assertUrlReturnsFileContents(baseUrl + 'index.html', 'web/tests.html', done)
+            assertUrlReturnsFileContents(baseUrl + 'index.html', 'tests/web/tests.html', done)
         })
         it('routes dir path', function(done){
-            assertUrlReturnsFileContents(baseUrl + 'www/hello.js', 'web/hello.js', done)
+            assertUrlReturnsFileContents(baseUrl + 'www/hello.js', 'tests/web/hello.js', done)
         })
         it('route base path', function(done){
-            assertUrlReturnsFileContents(baseUrl, 'web/tests.html', done)
+            assertUrlReturnsFileContents(baseUrl, 'tests/web/tests.html', done)
         })
         it('can route files in parent directory', function(done){
-            assertUrlReturnsFileContents(baseUrl + 'config.js', '../lib/config.js', done)
+            assertUrlReturnsFileContents(baseUrl + 'config.js', 'lib/config.js', done)
         })
     })
     

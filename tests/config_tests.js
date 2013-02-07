@@ -14,7 +14,9 @@ describe('Config', function(){
 			file: __dirname + '/testem.yml',
 			timeout: null
 		}
-		config = new Config(appMode, progOptions)
+		config = new Config(appMode, progOptions, {
+			cwd: 'tests'
+		})
 	})
 	it('can create', function(){
 		expect(config.progOptions).to.equal(progOptions)
@@ -52,7 +54,7 @@ describe('Config', function(){
 	})
 
 	it('give precendence to json config file', function(done){
-		var config = new Config('dev', {})
+		var config = new Config('dev', {}, {cwd: 'tests'})
 		config.read(function(){
 			expect(config.get('framework')).to.equal('mocha')
 			done()
@@ -151,15 +153,11 @@ describe('Config', function(){
 		})
 	})
 
-	function fileEntry(filename, attrs){
-		return { src: filename, attrs: attrs || [] }
-	}
-
 	describe('getSrcFiles', function(){
 		
 		it('by defaults list all .js files', function(done){
 			config.getSrcFiles(function(err, files){
-				expect(files.length).be.above(5) // because this dir should have a bunch of .js files
+				expect(files.length).be.above(5) // because top level dir should have at least one js file
 				done()
 			})
 		})
@@ -227,7 +225,7 @@ describe('Config', function(){
 		})
 		it('populates attributes for only the desired globs and excludes usig src_files_ignore', function(done){
 			config.set('src_files', [
-				fileEntry('config_tests.js', [ 'data-foo="true"', 'data-bar' ]),
+				{src: 'config_tests.js', attrs: [ 'data-foo="true"', 'data-bar' ]},
 				'integration/*'
 			])
 			config.set('src_files_ignore', '**/*.sh')
@@ -257,6 +255,10 @@ describe('Config', function(){
 			})
 		})
 	})
+
+	function fileEntry(filename, attrs){
+		return { src: 'tests/' + filename, attrs: attrs || [] }
+	}
 })
 
 
@@ -291,7 +293,8 @@ describe('getTemplateData', function(){
 		var fileConfig = {
 			src_files: [
 				"web/*.js",
-			]
+			],
+			cwd: 'tests'
 		}
 		var progOptions = mockTopLevelProgOptions()
 		var config = new Config('dev', progOptions, fileConfig)
@@ -300,9 +303,10 @@ describe('getTemplateData', function(){
 				timeout: 2,
 				port: 8081,
 				src_files: ['web/*.js'],
+				cwd: 'tests',
 				serve_files: [
-					{src:'web/hello.js', attrs: []},
-					{src:'web/hello_tests.js', attrs: []}
+					{src: '/web/hello.js', attrs: []},
+					{src: '/web/hello_tests.js', attrs: []}
 				]
 			})
 			done()
@@ -310,3 +314,5 @@ describe('getTemplateData', function(){
 	})
 
 })
+
+
