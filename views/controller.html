@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+<title>Test'em</title>
+</head>
+<body>
+<style>
+body{
+  margin: 0;
+  background-color: #666;
+}
+#ui{
+  position: absolute;
+  padding: 3px;
+  color: #fff;
+  font-family: Monaco, monospace;
+  text-transform: uppercase;
+  width: 100%;
+}
+#ui.connected{
+  color: #89e583;
+}
+#ui.disconnected{
+  color: #cc7575;
+}
+#iframe{
+  position: absolute;
+  width: 100%;
+  border: 0px none;
+}
+</style>
+<div id="ui">TEST'EM 'SCRIPTS!</div>
+<iframe id="iframe" src="http://bing.com"></iframe>
+<script src="/testem/socket.io.js"></script>
+<script src="/testem/patch.socket.io.js"></script>
+<script src="/testem/controller.js"></script>
+</body>
+</html>
